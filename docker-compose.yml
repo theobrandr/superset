@@ -47,6 +47,8 @@ services:
       - "127.0.0.1:5432:5432"
     volumes:
       - db_home:/var/lib/postgresql/data
+    networks:
+      - db_network
 
   superset:
     env_file: docker/.env
@@ -61,6 +63,8 @@ services:
     volumes: *superset-volumes
     environment:
       CYPRESS_CONFIG: "${CYPRESS_CONFIG}"
+    networks:
+      - db_network
 
   superset-websocket:
     container_name: superset_websocket
@@ -155,3 +159,7 @@ volumes:
     external: false
   redis:
     external: false
+
+networks:
+  db_network:
+    driver: bridge
